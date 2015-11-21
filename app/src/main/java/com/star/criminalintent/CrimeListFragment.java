@@ -1,7 +1,7 @@
 package com.star.criminalintent;
 
 
-import android.content.Intent;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -34,6 +34,18 @@ public class CrimeListFragment extends Fragment {
     private Button mNewCrimeButton;
 
     private boolean mSubtitleVisible;
+
+    private Callbacks mCallbacks;
+
+    public interface Callbacks {
+        void onCrimeSelected(Crime crime);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mCallbacks = (Callbacks) context;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -108,8 +120,7 @@ public class CrimeListFragment extends Fragment {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = CrimePagerActivity.newIntent(getContext(), mCrime.getId());
-                    startActivity(intent);
+                    mCallbacks.onCrimeSelected(mCrime);
                 }
             });
 
@@ -198,6 +209,12 @@ public class CrimeListFragment extends Fragment {
         outState.putBoolean(SAVED_SUBTITLE_VISIBLE, mSubtitleVisible);
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallbacks = null;
+    }
+
     private void updateSubtitle() {
         CrimeLab crimeLab = CrimeLab.getInstance(getContext());
         int crimeCount = crimeLab.getCrimes().size();
@@ -221,7 +238,7 @@ public class CrimeListFragment extends Fragment {
     private void newCrime() {
         Crime crime = new Crime();
         CrimeLab.getInstance(getContext()).addCrime(crime);
-        Intent intent = CrimePagerActivity.newIntent(getContext(), crime.getId());
-        startActivity(intent);
+        updateUI();
+        mCallbacks.onCrimeSelected(crime);
     }
 }
