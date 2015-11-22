@@ -2,6 +2,7 @@ package com.star.criminalintent;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -70,6 +71,12 @@ public class CrimeFragment extends Fragment {
     private ImageView mPhotoView;
     private ImageButton mCameraButton;
 
+    private Callbacks mCallbacks;
+
+    public interface Callbacks {
+        void onCrimeUpdated(Crime crime);
+    }
+
     public static CrimeFragment newInstance(UUID crimeId) {
         Bundle args = new Bundle();
         args.putSerializable(ARG_CRIME_ID, crimeId);
@@ -78,6 +85,12 @@ public class CrimeFragment extends Fragment {
         crimeFragment.setArguments(args);
 
         return crimeFragment;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mCallbacks = (Callbacks) context;
     }
 
     @Override
@@ -107,6 +120,7 @@ public class CrimeFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 mCrime.setTitle(s.toString());
+                updateCrime();
             }
 
             @Override
@@ -167,6 +181,7 @@ public class CrimeFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 mCrime.setSolved(isChecked);
+                updateCrime();
             }
         });
 
@@ -265,7 +280,13 @@ public class CrimeFragment extends Fragment {
     public void onPause() {
         super.onPause();
 
-        CrimeLab.getInstance(getContext()).updateCrime(mCrime);
+        updateCrime();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallbacks = null;
     }
 
     @Override
@@ -363,6 +384,13 @@ public class CrimeFragment extends Fragment {
         } else if (requestCode == REQUEST_PHOTO) {
             updatePhotoView();
         }
+
+        updateCrime();
+    }
+
+    private void updateCrime() {
+        CrimeLab.getInstance(getContext()).updateCrime(mCrime);
+        mCallbacks.onCrimeUpdated(mCrime);
     }
 
     private void updateDate() {

@@ -88,7 +88,7 @@ public class CrimeListFragment extends Fragment {
         updateUI();
     }
 
-    private void updateUI() {
+    public void updateUI() {
         CrimeLab crimeLab = CrimeLab.getInstance(getContext());
         List<Crime> crimes = crimeLab.getCrimes();
 

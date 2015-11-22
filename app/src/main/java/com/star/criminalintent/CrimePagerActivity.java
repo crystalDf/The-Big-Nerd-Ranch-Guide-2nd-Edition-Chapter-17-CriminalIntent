@@ -14,7 +14,8 @@ import com.star.criminalintent.model.Crime;
 import java.util.List;
 import java.util.UUID;
 
-public class CrimePagerActivity extends AppCompatActivity {
+public class CrimePagerActivity extends AppCompatActivity
+        implements CrimeFragment.Callbacks{
 
     private static final String EXTRA_CRIME_ID = "crime_id";
 
@@ -59,5 +60,10 @@ public class CrimePagerActivity extends AppCompatActivity {
         Intent intent = new Intent(context, CrimePagerActivity.class);
         intent.putExtra(EXTRA_CRIME_ID, crimeId);
         return intent;
+    }
+
+    @Override
+    public void onCrimeUpdated(Crime crime) {
+
     }
 }

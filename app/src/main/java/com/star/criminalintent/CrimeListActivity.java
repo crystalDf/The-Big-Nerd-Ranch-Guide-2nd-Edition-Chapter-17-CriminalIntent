@@ -6,7 +6,7 @@ import android.support.v4.app.Fragment;
 import com.star.criminalintent.model.Crime;
 
 public class CrimeListActivity extends SingleFragmentActivity
-        implements CrimeListFragment.Callbacks {
+        implements CrimeListFragment.Callbacks, CrimeFragment.Callbacks {
 
     @Override
     protected Fragment createFragment() {
@@ -29,5 +29,12 @@ public class CrimeListActivity extends SingleFragmentActivity
                     .replace(R.id.detail_fragment_container, newDetail)
                     .commit();
         }
+    }
+
+    @Override
+    public void onCrimeUpdated(Crime crime) {
+        CrimeListFragment crimeListFragment = (CrimeListFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.fragment_container);
+        crimeListFragment.updateUI();
     }
 }
