@@ -5,8 +5,12 @@ import android.support.v4.app.Fragment;
 
 import com.star.criminalintent.model.Crime;
 
+import java.util.UUID;
+
 public class CrimeListActivity extends SingleFragmentActivity
         implements CrimeListFragment.Callbacks, CrimeFragment.Callbacks {
+
+    private static final int REQUEST_CRIME = 0;
 
     @Override
     protected Fragment createFragment() {
@@ -22,7 +26,7 @@ public class CrimeListActivity extends SingleFragmentActivity
     public void onCrimeSelected(Crime crime) {
         if (findViewById(R.id.detail_fragment_container) == null) {
             Intent intent = CrimePagerActivity.newIntent(this, crime.getId());
-            startActivity(intent);
+            startActivityForResult(intent, REQUEST_CRIME);
         } else {
             Fragment newDetail = CrimeFragment.newInstance(crime.getId());
             getSupportFragmentManager().beginTransaction()
@@ -36,5 +40,19 @@ public class CrimeListActivity extends SingleFragmentActivity
         CrimeListFragment crimeListFragment = (CrimeListFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.fragment_container);
         crimeListFragment.updateUI();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CRIME && resultCode == RESULT_OK) {
+            Crime crime = CrimeLab.getInstance(this).getCrime(
+                    (UUID) data.getSerializableExtra(CrimePagerActivity.EXTRA_CRIME_ID));
+            if (findViewById(R.id.detail_fragment_container) != null) {
+                Fragment newDetail = CrimeFragment.newInstance(crime.getId());
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.detail_fragment_container, newDetail)
+                        .commit();
+            }
+        }
     }
 }

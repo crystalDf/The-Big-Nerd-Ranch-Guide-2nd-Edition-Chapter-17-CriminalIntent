@@ -17,7 +17,7 @@ import java.util.UUID;
 public class CrimePagerActivity extends AppCompatActivity
         implements CrimeFragment.Callbacks{
 
-    private static final String EXTRA_CRIME_ID = "crime_id";
+    public static final String EXTRA_CRIME_ID = "crime_id";
 
     private ViewPager mViewPager;
     private List<Crime> mCrimes;
@@ -54,6 +54,31 @@ public class CrimePagerActivity extends AppCompatActivity
                 break;
             }
         }
+
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                setResult();
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+        setResult();
+    }
+
+    private void setResult() {
+        Intent intent = new Intent();
+        intent.putExtra(EXTRA_CRIME_ID, mCrimes.get(mViewPager.getCurrentItem()).getId());
+        setResult(RESULT_OK, intent);
     }
 
     public static Intent newIntent(Context context, UUID crimeId) {
