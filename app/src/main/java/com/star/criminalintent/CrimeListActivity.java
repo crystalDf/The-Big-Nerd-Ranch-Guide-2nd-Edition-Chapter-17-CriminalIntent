@@ -44,15 +44,14 @@ public class CrimeListActivity extends SingleFragmentActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CRIME && resultCode == RESULT_OK) {
+        if (requestCode == REQUEST_CRIME && resultCode == RESULT_OK
+                && findViewById(R.id.detail_fragment_container) != null) {
             Crime crime = CrimeLab.getInstance(this).getCrime(
                     (UUID) data.getSerializableExtra(CrimePagerActivity.EXTRA_CRIME_ID));
-            if (findViewById(R.id.detail_fragment_container) != null) {
-                Fragment newDetail = CrimeFragment.newInstance(crime.getId());
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.detail_fragment_container, newDetail)
-                        .commit();
-            }
+            Fragment newDetail = CrimeFragment.newInstance(crime.getId());
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.detail_fragment_container, newDetail)
+                    .commit();
         }
     }
 }
