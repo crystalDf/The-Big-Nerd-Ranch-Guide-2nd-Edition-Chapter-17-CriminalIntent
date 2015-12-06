@@ -25,6 +25,12 @@ public class CrimeListActivity extends SingleFragmentActivity
     @Override
     public void onCrimeSelected(Crime crime) {
         if (findViewById(R.id.detail_fragment_container) == null) {
+            Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.detail_fragment_container);
+            if (fragment != null) {
+                getSupportFragmentManager().beginTransaction()
+                        .remove(fragment)
+                        .commit();
+            }
             Intent intent = CrimePagerActivity.newIntent(this, crime.getId());
             startActivityForResult(intent, REQUEST_CRIME);
         } else {
