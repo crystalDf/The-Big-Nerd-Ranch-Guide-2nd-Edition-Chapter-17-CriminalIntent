@@ -353,14 +353,14 @@ public class CrimeFragment extends Fragment {
                 return;
             }
 
-            Uri commonDataKindPhoneUri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
+            Uri commonDataKindsPhoneUri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
             columns = new String[] {
                     ContactsContract.CommonDataKinds.Phone.NUMBER
             };
             String whereClause = ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ? ";
             String[] whereArgs = new String[] {mCrime.getSuspect().getContactId()};
 
-            cursor = getActivity().getContentResolver().query(commonDataKindPhoneUri,
+            cursor = getActivity().getContentResolver().query(commonDataKindsPhoneUri,
                     columns, whereClause, whereArgs, null);
 
             if (cursor == null) {
