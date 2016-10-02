@@ -60,4 +60,5 @@ public class CrimeListActivity extends SingleFragmentActivity
                     .commit();
         }
     }
+
 }

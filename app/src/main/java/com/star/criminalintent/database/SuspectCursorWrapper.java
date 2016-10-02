@@ -34,4 +34,5 @@ public class SuspectCursorWrapper extends CursorWrapper{
 
         return suspect;
     }
+
 }

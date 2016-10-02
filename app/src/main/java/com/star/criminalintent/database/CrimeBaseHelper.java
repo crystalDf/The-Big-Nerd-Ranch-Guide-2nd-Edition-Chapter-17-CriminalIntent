@@ -34,4 +34,5 @@ public class CrimeBaseHelper extends SQLiteOpenHelper {
             default:
         }
     }
+
 }

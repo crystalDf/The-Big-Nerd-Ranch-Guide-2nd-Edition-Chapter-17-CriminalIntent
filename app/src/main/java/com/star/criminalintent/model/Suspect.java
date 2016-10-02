@@ -54,4 +54,5 @@ public class Suspect {
     public void setCrimeCount(int crimeCount) {
         mCrimeCount = crimeCount;
     }
+
 }

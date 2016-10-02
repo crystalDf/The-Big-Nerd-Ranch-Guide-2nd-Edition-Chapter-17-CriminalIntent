@@ -50,4 +50,5 @@ public class CrimeDbSchema {
                 + Cols.CRIME_COUNT
                 + ")";
     }
+
 }

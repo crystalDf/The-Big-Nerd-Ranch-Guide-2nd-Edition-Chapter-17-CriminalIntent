@@ -4,7 +4,6 @@ package com.star.criminalintent;
 import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
@@ -26,7 +25,6 @@ public class DetailDisplayFragment extends DialogFragment {
         return detailDisplayFragment;
     }
 
-    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
@@ -44,6 +42,7 @@ public class DetailDisplayFragment extends DialogFragment {
                         path, imageView.getWidth(), imageView.getHeight());
 
                 imageView.setImageBitmap(bitmap);
+                imageView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
 
@@ -53,4 +52,5 @@ public class DetailDisplayFragment extends DialogFragment {
                 .setPositiveButton(android.R.string.ok, null)
                 .create();
     }
+
 }

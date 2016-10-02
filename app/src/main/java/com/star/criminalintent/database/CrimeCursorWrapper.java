@@ -36,4 +36,5 @@ public class CrimeCursorWrapper extends CursorWrapper{
 
         return crime;
     }
+
 }

@@ -114,7 +114,7 @@ public class CrimeListFragment extends Fragment {
         private CheckBox mSolvedCheckBox;
         private TextView mDateTextView;
 
-        public CrimeHolder(final View itemView) {
+        public CrimeHolder(View itemView) {
             super(itemView);
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -241,4 +241,5 @@ public class CrimeListFragment extends Fragment {
         updateUI();
         mCallbacks.onCrimeSelected(crime);
     }
+
 }
