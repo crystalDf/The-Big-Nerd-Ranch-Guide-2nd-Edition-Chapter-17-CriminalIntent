@@ -59,6 +59,8 @@ public class CrimeListActivity extends SingleFragmentActivity
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.detail_fragment_container, newDetail)
                     .commit();
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
