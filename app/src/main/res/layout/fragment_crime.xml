@@ -3,7 +3,8 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              tools:context=".CrimeFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:id="@+id/crime_details_linear_layout">
 
     <include
         layout="@layout/view_camera_and_title"/>

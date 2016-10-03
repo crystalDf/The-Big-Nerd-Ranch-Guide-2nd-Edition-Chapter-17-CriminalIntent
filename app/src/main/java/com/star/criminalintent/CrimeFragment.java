@@ -71,7 +71,8 @@ public class CrimeFragment extends Fragment {
     private Callbacks mCallbacks;
 
     public interface Callbacks {
-        void onCrimeUpdated(Crime crime);
+        void onCrimeUpdated();
+        void onCrimeDeleted();
     }
 
     public static CrimeFragment newInstance(UUID crimeId) {
@@ -317,7 +318,7 @@ public class CrimeFragment extends Fragment {
 
     private void updateCrime() {
         CrimeLab.getInstance(getContext()).updateCrime(mCrime);
-        mCallbacks.onCrimeUpdated(mCrime);
+        mCallbacks.onCrimeUpdated();
     }
 
     private void updateChooseSuspectButton(Intent data) {
@@ -429,7 +430,7 @@ public class CrimeFragment extends Fragment {
             case R.id.menu_item_delete_crime:
                 if (mCrime != null) {
                     CrimeLab.getInstance(getContext()).deleteCrime(mCrime);
-                    getActivity().finish();
+                    mCallbacks.onCrimeDeleted();
                 }
                 return true;
             default:

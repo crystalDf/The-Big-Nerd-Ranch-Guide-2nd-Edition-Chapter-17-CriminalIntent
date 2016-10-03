@@ -2,9 +2,12 @@ package com.star.criminalintent;
 
 import android.content.Intent;
 import android.support.v4.app.Fragment;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import com.star.criminalintent.model.Crime;
 
+import java.util.List;
 import java.util.UUID;
 
 public class CrimeListActivity extends SingleFragmentActivity
@@ -43,10 +46,38 @@ public class CrimeListActivity extends SingleFragmentActivity
     }
 
     @Override
-    public void onCrimeUpdated(Crime crime) {
+    public void onCrimeInitialized() {
+        if (findViewById(R.id.detail_fragment_container) == null) {
+            return;
+        }
+
+        List<Crime> crimes = CrimeLab.getInstance(this).getCrimes();
+
+        if (!crimes.isEmpty()) {
+            Fragment newDetail = CrimeFragment.newInstance(crimes.get(0).getId());
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.detail_fragment_container, newDetail)
+                    .commit();
+        } else {
+            LinearLayout detailsLayout = (LinearLayout)
+                    findViewById(R.id.crime_details_linear_layout);
+            if (detailsLayout != null) {
+                detailsLayout.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    @Override
+    public void onCrimeUpdated() {
         CrimeListFragment crimeListFragment = (CrimeListFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.fragment_container);
         crimeListFragment.updateUI();
+    }
+
+    @Override
+    public void onCrimeDeleted() {
+        onCrimeInitialized();
+        onCrimeUpdated();
     }
 
     @Override
@@ -55,10 +86,14 @@ public class CrimeListActivity extends SingleFragmentActivity
                 && findViewById(R.id.detail_fragment_container) != null) {
             Crime crime = CrimeLab.getInstance(this).getCrime(
                     (UUID) data.getSerializableExtra(CrimePagerActivity.EXTRA_CRIME_ID));
-            Fragment newDetail = CrimeFragment.newInstance(crime.getId());
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.detail_fragment_container, newDetail)
-                    .commit();
+            if (crime != null) {
+                Fragment newDetail = CrimeFragment.newInstance(crime.getId());
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.detail_fragment_container, newDetail)
+                        .commit();
+            } else {
+                onCrimeDeleted();
+            }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }

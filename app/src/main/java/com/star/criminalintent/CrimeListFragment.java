@@ -39,6 +39,7 @@ public class CrimeListFragment extends Fragment {
 
     public interface Callbacks {
         void onCrimeSelected(Crime crime);
+        void onCrimeInitialized();
     }
 
     @Override
@@ -51,6 +52,8 @@ public class CrimeListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        mCallbacks.onCrimeInitialized();
     }
 
     @Override
