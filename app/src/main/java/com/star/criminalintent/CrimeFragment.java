@@ -447,8 +447,9 @@ public class CrimeFragment extends Fragment {
         String dateString = new SimpleDateFormat(dateFormat, Locale.US)
                 .format(mCrime.getDate());
 
-        String displayName = mCrime.getSuspect().getDisplayName();
-        if (displayName == null) {
+        String displayName;
+        if (mCrime.getSuspect() == null ||
+                (displayName = mCrime.getSuspect().getDisplayName()) == null) {
             displayName = getString(R.string.crime_report_no_suspect);
         } else {
             displayName = getString(R.string.crime_report_suspect, displayName);
